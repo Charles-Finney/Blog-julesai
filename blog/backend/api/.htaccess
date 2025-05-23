@@ -1,0 +1,8 @@
+# Placeholder .htaccess file
+# Future rules for URL rewriting and security can be added here.
+
+# Example: To disable directory listing (optional, server might do this by default)
+# Options -Indexes
+
+# Example: To set default character set (optional)
+# AddDefaultCharset UTF-8

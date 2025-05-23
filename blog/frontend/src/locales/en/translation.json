@@ -1,0 +1,39 @@
+{
+  "navHome": "Home",
+  "navProjects": "Projects",
+  "navDocuments": "Documents",
+  "navAbout": "About",
+  "navContact": "Contact",
+
+  "homeWelcome": "Welcome to the Homepage!",
+  "pageClicks": "Page Clicks",
+  "clickMe": "Click Me!",
+  "loading": "Loading...",
+  "errorLoadingCount": "Error loading count.",
+
+  "projectsTitle": "My Projects",
+  "documentsTitle": "My Documents",
+  "aboutTitle": "About Me",
+  "contactTitle": "Contact Me",
+  
+  "contactFormName": "Name:",
+  "contactFormEmail": "Email (Optional):",
+  "contactFormMessage": "Message:",
+  "contactFormSend": "Send Message",
+  "contactValidationRequired": "Name and Message fields are required.",
+  "contactValidationEmail": "Please enter a valid email address.",
+  "contactSuccess": "Message sent successfully! Thank you for reaching out.",
+  "contactError": "Failed to send message. Please try again later or use one of the methods below.",
+  "contactOtherWays": "Other ways to connect:",
+  "contactWhatsAppMsg": "Message on WhatsApp",
+  "contactWhatsAppCall": "Call on WhatsApp",
+
+  "postsLoading": "Loading posts...",
+  "postsError": "Failed to load posts.",
+  "postsNoPosts": "No posts of type \"{{postType}}\" found.",
+  "postCreated": "Created",
+  "postUpdated": "Last Updated",
+
+  "languageSwitcherEnglish": "English",
+  "languageSwitcherFrench": "Français"
+}

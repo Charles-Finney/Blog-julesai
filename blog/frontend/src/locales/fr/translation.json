@@ -1,0 +1,39 @@
+{
+  "navHome": "Accueil",
+  "navProjects": "Projets",
+  "navDocuments": "Documents",
+  "navAbout": "À Propos",
+  "navContact": "Contactez-moi",
+
+  "homeWelcome": "Bienvenue sur la Page d'Accueil!",
+  "pageClicks": "Clics sur la Page",
+  "clickMe": "Cliquez-moi!",
+  "loading": "Chargement...",
+  "errorLoadingCount": "Erreur de chargement du compteur.",
+
+  "projectsTitle": "Mes Projets",
+  "documentsTitle": "Mes Documents",
+  "aboutTitle": "À Propos de Moi",
+  "contactTitle": "Contactez-moi",
+  
+  "contactFormName": "Nom:",
+  "contactFormEmail": "Email (Optionnel):",
+  "contactFormMessage": "Message:",
+  "contactFormSend": "Envoyer le Message",
+  "contactValidationRequired": "Les champs Nom et Message sont requis.",
+  "contactValidationEmail": "Veuillez entrer une adresse e-mail valide.",
+  "contactSuccess": "Message envoyé avec succès! Merci de nous avoir contactés.",
+  "contactError": "Échec de l'envoi du message. Veuillez réessayer plus tard ou utiliser l'une des méthodes ci-dessous.",
+  "contactOtherWays": "Autres moyens de se connecter:",
+  "contactWhatsAppMsg": "Message sur WhatsApp",
+  "contactWhatsAppCall": "Appeler sur WhatsApp",
+  
+  "postsLoading": "Chargement des articles...",
+  "postsError": "Échec du chargement des articles.",
+  "postsNoPosts": "Aucun article de type \"{{postType}}\" trouvé.",
+  "postCreated": "Créé le",
+  "postUpdated": "Mis à jour le",
+
+  "languageSwitcherEnglish": "Anglais",
+  "languageSwitcherFrench": "Français"
+}
