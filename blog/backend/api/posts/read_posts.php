@@ -16,8 +16,12 @@ $type_filter = isset($_GET['type']) ? trim($_GET['type']) : null;
 $lang = isset($_GET['lang']) ? strtolower(trim($_GET['lang'])) : null;
 
 try {
-    // Base SQL query - fetch all language versions and common fields
-    $sql = "SELECT id, title, content, title_en, content_en, title_fr, content_fr, type, created_at, updated_at FROM posts";
+    // Base SQL query - fetch all language versions and common fields, plus new type-specific fields
+    $sql = "SELECT id, title, content, title_en, content_en, title_fr, content_fr, type, 
+                   author, cover_image_url, publication_year, isbn, purchase_link,
+                   video_url, platform, duration,
+                   created_at, updated_at 
+            FROM posts";
 
     if ($type_filter) {
         $sql .= " WHERE type = :type";
@@ -51,20 +55,35 @@ try {
                 $localized_content = !empty($post['content_fr']) ? $post['content_fr'] : $post['content'];
             }
             
-            $processed_posts[] = [
+            $current_post_data = [
                 'id' => $post['id'],
                 'localized_title' => $localized_title,
                 'localized_content' => $localized_content,
-                // Optionally include default title/content if needed for frontend
-                // 'default_title' => $post['title'],
-                // 'default_content' => $post['content'],
                 'type' => $post['type'],
                 'created_at' => $post['created_at'],
-                'updated_at' => $post['updated_at']
-                // You can also include all language versions if the frontend needs them for a language switcher without re-fetching
-                // 'title_en' => $post['title_en'], 'content_en' => $post['content_en'],
-                // 'title_fr' => $post['title_fr'], 'content_fr' => $post['content_fr'],
+                'updated_at' => $post['updated_at'],
+                // Include new fields, they will be null if not applicable to type or not set
+                'author' => $post['author'],
+                'cover_image_url' => $post['cover_image_url'],
+                'publication_year' => $post['publication_year'] === null ? null : (int)$post['publication_year'],
+                'isbn' => $post['isbn'],
+                'purchase_link' => $post['purchase_link'],
+                'video_url' => $post['video_url'],
+                'platform' => $post['platform'],
+                'duration' => $post['duration'],
             ];
+            
+            // Optionally, to keep the payload smaller, only include type-specific fields 
+            // if the type matches. However, including them as null is also fine.
+            // Example:
+            // if ($post['type'] !== 'book') {
+            //     unset($current_post_data['author'], $current_post_data['cover_image_url'], ...);
+            // }
+            // if ($post['type'] !== 'video_tutorial') {
+            //     unset($current_post_data['video_url'], $current_post_data['platform'], ...);
+            // }
+
+            $processed_posts[] = $current_post_data;
         }
         http_response_code(200); // OK
         echo json_encode(['status' => 'success', 'data' => $processed_posts]);

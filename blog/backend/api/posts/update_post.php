@@ -24,6 +24,15 @@ $content_en = isset($_POST['content_en']) ? trim($_POST['content_en']) : null;
 $title_fr = isset($_POST['title_fr']) ? trim($_POST['title_fr']) : null;
 $content_fr = isset($_POST['content_fr']) ? trim($_POST['content_fr']) : null;
 
+// New optional fields for 'book' and 'video_tutorial'
+$author = isset($_POST['author']) ? trim($_POST['author']) : null;
+$cover_image_url = isset($_POST['cover_image_url']) ? trim($_POST['cover_image_url']) : null;
+$publication_year = isset($_POST['publication_year']) ? filter_var($_POST['publication_year'], FILTER_VALIDATE_INT, ['options' => ['default' => null]]) : null;
+$isbn = isset($_POST['isbn']) ? trim($_POST['isbn']) : null;
+$purchase_link = isset($_POST['purchase_link']) ? trim($_POST['purchase_link']) : null;
+$video_url = isset($_POST['video_url']) ? trim($_POST['video_url']) : null;
+$platform = isset($_POST['platform']) ? trim($_POST['platform']) : null;
+$duration = isset($_POST['duration']) ? trim($_POST['duration']) : null;
 
 // Validate input
 if ($id === false || $id === null) {
@@ -33,12 +42,13 @@ if ($id === false || $id === null) {
 }
 
 // Check if at least one field is provided for update.
-// This condition needs to be expanded to include localized fields.
 if (empty($title) && empty($content) && empty($type) &&
     $title_en === null && $content_en === null && 
-    $title_fr === null && $content_fr === null) {
+    $title_fr === null && $content_fr === null &&
+    $author === null && $cover_image_url === null && $publication_year === null && $isbn === null && $purchase_link === null &&
+    $video_url === null && $platform === null && $duration === null) {
     http_response_code(400); // Bad Request
-    echo json_encode(['status' => 'error', 'message' => 'At least one field (title, content, type, or any localized version) must be provided for update.']);
+    echo json_encode(['status' => 'error', 'message' => 'At least one field must be provided for update.']);
     exit;
 }
 
@@ -88,10 +98,42 @@ try {
         $update_fields[] = "content_fr = :content_fr";
         $params_to_bind['content_fr'] = $content_fr;
     }
+    // New fields for book/video
+    if ($author !== null) {
+        $update_fields[] = "author = :author";
+        $params_to_bind['author'] = $author;
+    }
+    if ($cover_image_url !== null) {
+        $update_fields[] = "cover_image_url = :cover_image_url";
+        $params_to_bind['cover_image_url'] = $cover_image_url;
+    }
+    if ($publication_year !== null) {
+        $update_fields[] = "publication_year = :publication_year";
+        $params_to_bind['publication_year'] = $publication_year;
+    }
+    if ($isbn !== null) {
+        $update_fields[] = "isbn = :isbn";
+        $params_to_bind['isbn'] = $isbn;
+    }
+    if ($purchase_link !== null) {
+        $update_fields[] = "purchase_link = :purchase_link";
+        $params_to_bind['purchase_link'] = $purchase_link;
+    }
+    if ($video_url !== null) {
+        $update_fields[] = "video_url = :video_url";
+        $params_to_bind['video_url'] = $video_url;
+    }
+    if ($platform !== null) {
+        $update_fields[] = "platform = :platform";
+        $params_to_bind['platform'] = $platform;
+    }
+    if ($duration !== null) {
+        $update_fields[] = "duration = :duration";
+        $params_to_bind['duration'] = $duration;
+    }
     
-    // This check is now more robust as it's after attempting to build update_fields
     if (empty($update_fields)) {
-        http_response_code(400);
+        http_response_code(400); 
         echo json_encode(['status' => 'error', 'message' => 'No fields to update specified.']);
         exit;
     }
@@ -100,14 +142,17 @@ try {
     $stmt = $pdo->prepare($sql);
 
     // Bind parameters from the collected array
-    foreach ($params_to_bind as $key => &$value) { // Pass $value by reference
-        if ($key === 'id') {
+    foreach ($params_to_bind as $key => &$value) { 
+        if ($key === 'id' || ($key === 'publication_year' && $value !== null)) { // publication_year can be int
             $stmt->bindParam(":$key", $value, PDO::PARAM_INT);
-        } else {
+        } elseif ($key === 'publication_year' && $value === null) {
+            $stmt->bindParam(":$key", $value, PDO::PARAM_NULL);
+        }
+         else {
             $stmt->bindParam(":$key", $value, PDO::PARAM_STR);
         }
     }
-    unset($value); // Unset reference to last element
+    unset($value); 
 
     // Execute statement
     if ($stmt->execute()) {
